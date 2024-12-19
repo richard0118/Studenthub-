@@ -39,7 +39,7 @@ cd student-crud-app
 npm install
 
 n
-启动前端開發伺服器：
+啟動前端開發伺服器：
 
 bash
 複製程式碼
@@ -55,7 +55,7 @@ cd backend
 npm install
 修改 server.js 中的資料庫連線設定，將 `mongodb://localhost/studenmongodb://localhost/studentDB 修改為你的 MongoDB 資料庫連線字符串（如果你有更改）。
 
-启动後端伺服器：
+啟動後端伺服器：
 
 bash
 複製程式碼
