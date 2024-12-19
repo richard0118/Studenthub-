@@ -28,13 +28,9 @@ API 端點
 前端設置
 下載或克隆此儲存庫：
 
-bash
-複製程式碼
 git clone https://github.com/yourusername/student-crud-app.git
 進入 frontend 資料夾並安裝所需的 npm 套件：
 
-bash
-複製程式碼
 cd student-crud-app
 npm install
 
