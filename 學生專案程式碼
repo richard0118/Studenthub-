@@ -1,0 +1,137 @@
+//前端
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+function App() {
+  const [students, setStudents] = useState([]);
+  const [newStudent, setNewStudent] = useState({
+    account: '',
+    name: '',
+    department: '',
+    grade: '',
+    class: '',
+    email: ''
+  });
+
+  // 獲取學生資料
+  useEffect(() => {
+    axios.get('http://localhost:5000/api/students')
+      .then(response => setStudents(response.data))
+      .catch(error => console.error('Error fetching data', error));
+  }, []);
+
+  // 新增學生
+  const handleAddStudent = () => {
+    axios.post('http://localhost:5000/api/students', newStudent)
+      .then(response => setStudents([...students, response.data]))
+      .catch(error => console.error('Error adding student', error));
+  };
+
+  // 編輯學生
+  const handleEditStudent = (id) => {
+    axios.put(`http://localhost:5000/api/students/${id}`, newStudent)
+      .then(response => {
+        const updatedStudents = students.map(student => 
+          student.id === id ? response.data : student
+        );
+        setStudents(updatedStudents);
+      })
+      .catch(error => console.error('Error editing student', error));
+  };
+
+  // 刪除學生
+  const handleDeleteStudent = (id) => {
+    axios.delete(`http://localhost:5000/api/students/${id}`)
+      .then(() => {
+        const updatedStudents = students.filter(student => student.id !== id);
+        setStudents(updatedStudents);
+      })
+      .catch(error => console.error('Error deleting student', error));
+  };
+
+  return (
+    <div className="App">
+      <h1>學生資料管理系統</h1>
+      <div>
+        <input type="text" placeholder="帳號" value={newStudent.account} onChange={e => setNewStudent({...newStudent, account: e.target.value})} />
+        <input type="text" placeholder="姓名" value={newStudent.name} onChange={e => setNewStudent({...newStudent, name: e.target.value})} />
+        <input type="text" placeholder="院系" value={newStudent.department} onChange={e => setNewStudent({...newStudent, department: e.target.value})} />
+        <input type="text" placeholder="年級" value={newStudent.grade} onChange={e => setNewStudent({...newStudent, grade: e.target.value})} />
+        <input type="text" placeholder="班級" value={newStudent.class} onChange={e => setNewStudent({...newStudent, class: e.target.value})} />
+        <input type="email" placeholder="Email" value={newStudent.email} onChange={e => setNewStudent({...newStudent, email: e.target.value})} />
+        <button onClick={handleAddStudent}>新增學生</button>
+      </div>
+      <ul>
+        {students.map(student => (
+          <li key={student.id}>
+            {student.name} ({student.department}) 
+            <button onClick={() => handleEditStudent(student.id)}>編輯</button>
+            <button onClick={() => handleDeleteStudent(student.id)}>刪除</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default App;
+
+//後端
+
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+
+// 初始化 Express 應用
+const app = express();
+const port = 5000;
+
+// 使用 body-parser 來處理 JSON 請求
+app.use(bodyParser.json());
+
+// 連接到 MongoDB 資料庫
+mongoose.connect('mongodb://localhost/studentDB', { useNewUrlParser: true, useUnifiedTopology: true });
+
+// 定義學生資料結構
+const studentSchema = new mongoose.Schema({
+  account: String,
+  name: String,
+  department: String,
+  grade: String,
+  class: String,
+  email: String
+});
+
+// 建立模型
+const Student = mongoose.model('Student', studentSchema);
+
+// API: 獲取所有學生
+app.get('/api/students', async (req, res) => {
+  const students = await Student.find();
+  res.json(students);
+});
+
+// API: 新增學生
+app.post('/api/students', async (req, res) => {
+  const student = new Student(req.body);
+  await student.save();
+  res.json(student);
+});
+
+// API: 編輯學生資料
+app.put('/api/students/:id', async (req, res) => {
+  const student = await Student.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  res.json(student);
+});
+
+// API: 刪除學生
+app.delete('/api/students/:id', async (req, res) => {
+  await Student.findByIdAndDelete(req.params.id);
+  res.status(204).end();
+});
+
+// 啟動伺服器
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
