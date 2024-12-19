@@ -38,27 +38,19 @@ bash
 cd student-crud-app
 npm install
 
-n
-啟動前端開發伺服器：
 
-bash
-複製程式碼
+啟動前端開發伺服器：
 npm start
 預設會在瀏覽器中打開 http://localhost:3000。
 
 後端設置
 進入 backend 資料夾並安裝所需的 npm 套件：
-
-bash
-複製程式碼
 cd backend
 npm install
 修改 server.js 中的資料庫連線設定，將 `mongodb://localhost/studenmongodb://localhost/studentDB 修改為你的 MongoDB 資料庫連線字符串（如果你有更改）。
 
 啟動後端伺服器：
 
-bash
-複製程式碼
 node server.js
 後端伺服器將會在 http://localhost:5000 監聽請求。
 
@@ -67,8 +59,6 @@ node server.js
 
 確保 MongoDB 服務已經啟動。如果在本地運行，可以使用以下命令啟動 MongoDB：
 
-bash
-複製程式碼
 mongod
 在 MongoDB 中創建一個名為 studentDB 的資料庫。
 
@@ -77,14 +67,10 @@ mongod
 
 啟動後端伺服器：
 
-bas
-複製程式碼
 cd backend
 node server.js
 啟動前端應用：
 
-bash
-複製程式碼
 cd frontend
 npm start
 打開瀏覽器，訪問 http://localhost:3000，即可看到學生資料管理系統的介面。
@@ -99,8 +85,6 @@ API 端點
 
 回應範例：
 
-json
-複製程式碼
 [
   {
     "id": "1",
@@ -122,8 +106,6 @@ json
 
 請求體：
 
-json
-複製程式碼
 {
   "account": "tkuee0787",
   
@@ -136,8 +118,6 @@ json
 }
 回應範例：
 
-json
-複製程式碼
 {
   "id": "1",
   "account": "tkuee0787",
@@ -152,8 +132,6 @@ json
 
 請求體：
 
-json
-複製程式碼
 {
   "account": "tkuee0787",
   "name": "張佳慧",
@@ -166,8 +144,6 @@ json
 }
 回應範例：
 
-json
-複製程式碼
 {
   "id": "1",
   "account": "tkuee0787",
